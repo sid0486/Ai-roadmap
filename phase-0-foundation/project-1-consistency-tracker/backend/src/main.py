@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from src.routes.user_route import router as User
+from src.routes.task_route import router as Task
 from src.database import Base , engine
 
 Base.metadata.create_all(bind=engine)
@@ -7,6 +8,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 app.include_router(User,prefix="/users",tags=["Users"])
+app.include_router(Task,prefix="/tasks",tags=["Tasks"])
+
 
 @app.get("/")
 def home():

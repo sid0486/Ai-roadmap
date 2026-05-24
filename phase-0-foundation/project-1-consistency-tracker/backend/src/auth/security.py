@@ -4,7 +4,7 @@ from src.database import get_db
 from sqlalchemy.orm import Session
 from datetime import datetime ,timedelta
 from passlib.context import CryptContext
-from jose import jwt 
+from jose import jwt ,JWTError
 from src.config import settings
 from pwdlib import PasswordHash
 
@@ -33,12 +33,14 @@ def create_token(data:dict):
 
     encoded_jwt = jwt.encode(
         to_encode,
-        SECRET_KEY,
+        settings.secret_key,
         algorithm=ALGORITHM
     )
     return encoded_jwt
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/Login")
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/users/login"
+)
 
 def get_current_user(token:str =Depends(oauth2_scheme),db:Session=Depends(get_db)):
 
