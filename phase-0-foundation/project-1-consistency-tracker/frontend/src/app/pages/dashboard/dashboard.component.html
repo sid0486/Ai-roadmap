@@ -1,0 +1,110 @@
+<div class="app-layout">
+
+  <nav class="topbar">
+    <span class="logo">Tracker<span class="accent">.</span></span>
+    <button class="btn-ghost" (click)="logout()">
+      <span>Sign out</span>
+    </button>
+  </nav>
+
+  <main class="content">
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon">📋</span>
+        <span class="stat-label">Total tasks</span>
+        <span class="stat-value">{{ tasks.length }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">✅</span>
+        <span class="stat-label">Completed today</span>
+        <span class="stat-value green">{{ completedCount }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-label">Best streak</span>
+        <span class="stat-value amber">{{ bestStreak }} <small>days</small></span>
+      </div>
+    </div>
+
+    <!-- Year Grid -->
+    <div class="year-grid-wrapper">
+      <div class="grid-header">
+        <span class="grid-title">{{ currentYear }} Progress</span>
+        <span class="grid-badge">Day {{ currentDayOfYear }}</span>
+      </div>
+      <div class="year-grid">
+        <div
+          class="day-dot"
+          *ngFor="let day of yearDays; let i = index"
+          [class.past]="day.completed"
+          [class.today-done]="day.today"
+          [class.today-pending]="day.todayPending"
+          [class.future]="day.future"
+          [title]="i === todayIndex ? 'Today — Day ' + currentDayOfYear : ''">
+        </div>
+      </div>
+      <div class="year-info">
+        <span>Day <strong>{{ currentDayOfYear }}</strong> of 365 &mdash; {{ currentYear }}</span>
+        <span>{{ 365 - currentDayOfYear }} days remaining</span>
+      </div>
+    </div>
+
+    <!-- Add Task -->
+    <div class="add-task-row">
+      <input
+        type="text"
+        [(ngModel)]="newTaskTitle"
+        placeholder="Add a new habit..."
+        (keyup.enter)="addTask()"
+      />
+      <button class="btn-primary" (click)="addTask()" [disabled]="loading">
+        <span *ngIf="!loading">+ Add</span>
+        <span *ngIf="loading" class="spinner"></span>
+      </button>
+    </div>
+
+    <!-- Error -->
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <!-- Task List -->
+    <div class="tasks-list">
+      <div *ngIf="tasks.length === 0" class="empty-state">
+        <span class="empty-icon">🌱</span>
+        <p>No habits yet. Add your first one above!</p>
+      </div>
+
+      <div
+        class="task-card"
+        *ngFor="let task of tasks; let i = index"
+        [class.completed]="task.completed"
+        [style.animation-delay]="i * 60 + 'ms'">
+
+        <button
+          class="check-btn"
+          [class.done]="task.completed"
+          (click)="toggleTask(task)">
+          <span class="check-icon">✓</span>
+        </button>
+
+        <div class="task-info">
+          <span class="task-title">{{ task.title }}</span>
+          <div class="task-meta">
+            <span class="streak-badge" *ngIf="task.streak > 0">
+              🔥 {{ task.streak }} day streak
+            </span>
+            <span class="new-badge" *ngIf="task.streak === 0 && !task.completed">
+              New
+            </span>
+          </div>
+        </div>
+
+        <button class="delete-btn" (click)="deleteTask(task.id)" title="Delete">
+          <span>✕</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
