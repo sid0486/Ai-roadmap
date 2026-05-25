@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:8000'
+  apiUrl: 'https://ai-roadmap-production-8822.up.railway.app'
 };
