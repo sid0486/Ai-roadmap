@@ -17,7 +17,7 @@ export class AuthService {
 
 login(data: LoginRequest): Observable<LoginResponse> {
   return this.http.post<LoginResponse>(
-    `${this.apiUrl}/login`,
+    `${this.apiUrl}/users/login`,
     data
   ).pipe(
     tap(response => {
