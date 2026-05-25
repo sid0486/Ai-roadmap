@@ -11,7 +11,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:4200",
-    "https://your-app.vercel.app",  # ← update this after Vercel deployment
+    "https://consistency-tracker-beta.vercel.app",
 ]
 
 app.add_middleware(
