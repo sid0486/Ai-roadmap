@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-deployed-api-url.com'  // update when you deploy
+  apiUrl: 'https://ai-roadmap-production-8822.up.railway.app'
 };
