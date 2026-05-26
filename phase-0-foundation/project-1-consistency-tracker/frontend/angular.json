@@ -13,48 +13,40 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
-
       "architect": {
-
         "build": {
           "builder": "@angular/build:application",
-
           "options": {
             "browser": "src/main.ts",
-
             "tsConfig": "tsconfig.app.json",
-
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
-
             "styles": [
               "src/styles.css"
             ]
           },
-
           "configurations": {
-
             "production": {
-
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
-
               "extractLicenses": true,
-
               "sourceMap": false,
-
               "outputHashing": "all",
-
               "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
                   "maximumError": "1MB"
                 },
-
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kB",
@@ -62,37 +54,27 @@
                 }
               ]
             },
-
             "development": {
-
               "optimization": false,
-
               "extractLicenses": false,
-
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": []
             }
           },
-
           "defaultConfiguration": "production"
         },
-
         "serve": {
           "builder": "@angular/build:dev-server",
-
           "configurations": {
-
             "production": {
               "buildTarget": "consistency-tracker-frontend:build:production"
             },
-
             "development": {
               "buildTarget": "consistency-tracker-frontend:build:development"
             }
           },
-
           "defaultConfiguration": "development"
         },
-
         "test": {
           "builder": "@angular/build:unit-test"
         }
