@@ -10,6 +10,7 @@ export const authGuard: CanActivateFn = () => {
     return true;
   }
 
-  router.navigate(['/login']);
+  // Token expired or missing — clear it and redirect to login
+  authService.logout();
   return false;
 };

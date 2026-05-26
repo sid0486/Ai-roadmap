@@ -12,7 +12,7 @@ from src.models.user_model import User
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "mysecretkey")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 1440
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
