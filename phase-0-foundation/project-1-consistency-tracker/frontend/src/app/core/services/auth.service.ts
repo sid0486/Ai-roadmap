@@ -16,24 +16,15 @@ export class AuthService {
   }
 
   login(data: LoginRequest): Observable<LoginResponse> {
-    const formData = new URLSearchParams();
-    formData.set('username', data.username);
-    formData.set('password', data.password);
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-
-    return this.http.post<LoginResponse>(
-      `${this.apiUrl}/users/login`,
-      formData.toString(),
-      { headers }
-    ).pipe(
-      tap(response => {
-        localStorage.setItem('access_token', response.access_token);
-      })
-    );
-  }
+  return this.http.post<LoginResponse>(
+    `${this.apiUrl}/users/login`,
+    { email: data.username, password: data.password }
+  ).pipe(
+    tap(response => {
+      localStorage.setItem('access_token', response.access_token);
+    })
+  );
+}
 
   logout(): void {
     localStorage.removeItem('access_token');
