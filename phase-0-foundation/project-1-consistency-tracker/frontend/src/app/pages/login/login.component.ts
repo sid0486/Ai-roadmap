@@ -23,7 +23,7 @@ export class LoginComponent {
   this.loading = true;
 
   this.authService.login({
-    email: this.email,
+    username: this.email,
     password: this.password
   }).subscribe({
     next: (response) => {

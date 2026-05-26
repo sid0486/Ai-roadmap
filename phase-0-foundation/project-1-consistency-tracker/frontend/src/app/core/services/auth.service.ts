@@ -12,19 +12,29 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   register(data: RegisterRequest): Observable<UserResponse> {
-  return this.http.post<UserResponse>(`${this.apiUrl}/users`, data);
-}
+    return this.http.post<UserResponse>(`${this.apiUrl}/users/`, data);
+  }
 
-login(data: LoginRequest): Observable<LoginResponse> {
-  return this.http.post<LoginResponse>(
-    `${this.apiUrl}/users/login`,
-    data
-  ).pipe(
-    tap(response => {
-      localStorage.setItem('access_token', response.access_token);
-    })
-  );
-}
+  login(data: LoginRequest): Observable<LoginResponse> {
+    const formData = new URLSearchParams();
+    formData.set('username', data.username);
+    formData.set('password', data.password);
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+
+    return this.http.post<LoginResponse>(
+      `${this.apiUrl}/users/login`,
+      formData.toString(),
+      { headers }
+    ).pipe(
+      tap(response => {
+        localStorage.setItem('access_token', response.access_token);
+      })
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('access_token');
     this.router.navigate(['/login']);
