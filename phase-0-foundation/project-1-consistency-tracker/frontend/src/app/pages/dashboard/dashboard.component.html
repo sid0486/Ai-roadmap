@@ -42,6 +42,7 @@
           [class.today-done]="day.today"
           [class.today-pending]="day.todayPending"
           [class.future]="day.future"
+          [style.background]="day.completed ? getPastColor(i) : ''"
           [title]="i === todayIndex ? 'Today — Day ' + currentDayOfYear : ''">
         </div>
       </div>

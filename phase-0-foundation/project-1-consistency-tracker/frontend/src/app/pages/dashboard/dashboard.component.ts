@@ -59,6 +59,14 @@ export class DashboardComponent implements OnInit {
     return this.tasks.reduce((max, t) => Math.max(max, t.streak || 0), 0);
   }
 
+  getPastColor(index: number): string {
+    const progress = index / Math.max(this.todayIndex, 1);
+    const r = Math.round(160 - (progress * 60));
+    const g = Math.round(140 - (progress * 80));
+    const b = Math.round(255 - (progress * 40));
+    return `rgba(${r}, ${g}, ${b}, ${0.3 + progress * 0.5})`;
+  }
+
   generateYearGrid(): void {
     const idx = this.todayIndex;
     const hasCompletedToday = this.completedCount > 0;
