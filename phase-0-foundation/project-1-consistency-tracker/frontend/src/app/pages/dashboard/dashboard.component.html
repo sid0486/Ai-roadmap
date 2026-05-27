@@ -2,14 +2,11 @@
 
   <nav class="topbar">
     <span class="logo">Tracker<span class="accent">.</span></span>
-    <button class="btn-ghost" (click)="logout()">
-      <span>Sign out</span>
-    </button>
+    <button class="btn-ghost" (click)="logout()">Sign out</button>
   </nav>
 
   <main class="content">
 
-    <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-icon">📋</span>
@@ -28,7 +25,6 @@
       </div>
     </div>
 
-    <!-- Year Grid -->
     <div class="year-grid-wrapper">
       <div class="grid-header">
         <span class="grid-title">{{ currentYear }} Progress</span>
@@ -42,7 +38,6 @@
           [class.today-done]="day.today"
           [class.today-pending]="day.todayPending"
           [class.future]="day.future"
-          [style.background]="day.completed ? getPastColor(i) : ''"
           [title]="i === todayIndex ? 'Today — Day ' + currentDayOfYear : ''">
         </div>
       </div>
@@ -52,7 +47,6 @@
       </div>
     </div>
 
-    <!-- Add Task -->
     <div class="add-task-row">
       <input
         type="text"
@@ -66,10 +60,8 @@
       </button>
     </div>
 
-    <!-- Error -->
     <div class="error" *ngIf="error">{{ error }}</div>
 
-    <!-- Task List -->
     <div class="tasks-list">
       <div *ngIf="tasks.length === 0" class="empty-state">
         <span class="empty-icon">🌱</span>
@@ -82,10 +74,7 @@
         [class.completed]="task.completed"
         [style.animation-delay]="i * 60 + 'ms'">
 
-        <button
-          class="check-btn"
-          [class.done]="task.completed"
-          (click)="toggleTask(task)">
+        <button class="check-btn" [class.done]="task.completed" (click)="toggleTask(task)">
           <span class="check-icon">✓</span>
         </button>
 
