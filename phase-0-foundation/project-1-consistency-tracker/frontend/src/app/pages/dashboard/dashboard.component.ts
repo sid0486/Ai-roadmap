@@ -9,7 +9,7 @@ interface DayDot {
   completed: boolean;
   today: boolean;
   future: boolean;
-  todayPending: boolean;  // ← add this
+  todayPending: boolean;
 }
 
 @Component({
@@ -60,16 +60,16 @@ export class DashboardComponent implements OnInit {
   }
 
   generateYearGrid(): void {
-  const idx = this.todayIndex;
-  const hasCompletedToday = this.completedCount > 0;
+    const idx = this.todayIndex;
+    const hasCompletedToday = this.completedCount > 0;
 
-  this.yearDays = Array.from({ length: 365 }, (_, i) => ({
-    completed: i < idx,
-    today: i === idx && hasCompletedToday,
-    todayPending: i === idx && !hasCompletedToday,
-    future: i > idx
-  }));
-}
+    this.yearDays = Array.from({ length: 365 }, (_, i) => ({
+      completed: i < idx,
+      today: i === idx && hasCompletedToday,
+      todayPending: i === idx && !hasCompletedToday,
+      future: i > idx
+    }));
+  }
 
   loadTasks(): void {
     this.taskService.getTasks().subscribe({
@@ -77,12 +77,15 @@ export class DashboardComponent implements OnInit {
         this.tasks = tasks;
         this.generateYearGrid();
       },
-      error: () => this.error = 'Failed to load tasks'
+      error: () => {
+        this.error = 'Failed to load tasks. Please refresh the page.';
+      }
     });
   }
 
   addTask(): void {
     if (!this.newTaskTitle.trim()) return;
+    this.error = '';
     this.loading = true;
 
     this.taskService.createTask({ title: this.newTaskTitle }).subscribe({
@@ -93,7 +96,11 @@ export class DashboardComponent implements OnInit {
         this.generateYearGrid();
       },
       error: (err) => {
-        this.error = err.error?.detail || 'Failed to create task';
+        if (err.status === 400) {
+          this.error = `Task "${this.newTaskTitle}" already exists!`;
+        } else {
+          this.error = err.error?.detail || 'Failed to create task. Please try again.';
+        }
         this.loading = false;
       }
     });
@@ -109,7 +116,9 @@ export class DashboardComponent implements OnInit {
         if (index !== -1) this.tasks[index] = updated;
         this.generateYearGrid();
       },
-      error: () => this.error = 'Failed to update task'
+      error: () => {
+        this.error = 'Failed to update task. Please try again.';
+      }
     });
   }
 
@@ -119,7 +128,9 @@ export class DashboardComponent implements OnInit {
         this.tasks = this.tasks.filter(t => t.id !== id);
         this.generateYearGrid();
       },
-      error: () => this.error = 'Failed to delete task'
+      error: () => {
+        this.error = 'Failed to delete task. Please try again.';
+      }
     });
   }
 

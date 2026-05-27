@@ -25,16 +25,24 @@ export class RegisterComponent {
     this.success = '';
     this.loading = true;
 
-    this.authService.register({ username: this.username, email: this.email, password: this.password })
-      .subscribe({
-        next: () => {
-          this.success = 'Account created! Redirecting to login...';
-          setTimeout(() => this.router.navigate(['/login']), 1500);
-        },
-        error: (err) => {
-          this.error = err.error?.detail || 'Registration failed';
-          this.loading = false;
+    this.authService.register({
+      username: this.username,
+      email: this.email,
+      password: this.password
+    }).subscribe({
+      next: () => {
+        this.success = 'Account created! Redirecting to login...';
+        setTimeout(() => this.router.navigate(['/login']), 1500);
+      },
+      error: (err) => {
+        const status = err.status;
+        if (status === 400) {
+          this.error = 'An account with this email already exists. Please login instead.';
+        } else {
+          this.error = err.error?.detail || 'Registration failed. Please try again.';
         }
-      });
+        this.loading = false;
+      }
+    });
   }
 }
